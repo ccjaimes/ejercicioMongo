@@ -1,0 +1,300 @@
+{
+	"info": {
+		"_postman_id": "96580926-f553-4b84-b187-92b6618f1b24",
+		"name": "PruebaPaises",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Crear País",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "bfd256f8-72fb-447a-93c3-29f313ee2c64",
+						"exec": [
+							"var data = JSON.parse(request.data);",
+							"postman.setGlobalVariable(\"new_country\",data.country);",
+							"tests[\"No genera error en el Post\"] = responseCode.code === 200;",
+							"console.log(data.country);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"country\": \"Luxembourg\",\r\n    \"population\": 42621,\r\n    \"continent\": \"Europe\",\r\n    \"lifeExpectancy\": 89.3,\r\n    \"purchasingPower\": 80009.21\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8081/countries/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"countries",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear País ya existente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "bfd256f8-72fb-447a-93c3-29f313ee2c64",
+						"exec": [
+							"tests[\"Debe generar error en el Post\"] = responseCode.code === 409;",
+							"console.log(data.country);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"country\": \"Angola\",\r\n    \"population\": 42621,\r\n    \"continent\": \"Europe\",\r\n    \"lifeExpectancy\": 89.3,\r\n    \"purchasingPower\": 80009.21\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8081/countries/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"countries",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener todos los paises",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "3251b5c9-9aa6-4a8a-9819-11a5aa6bb371",
+						"exec": [
+							"var data = JSON.parse(responseBody);",
+							"tests[\"No genera error en el Gell All\"] = responseCode.code === 200;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/countries/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"countries",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener un país",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "bfb05946-9e8b-4029-824f-8fcd072da499",
+						"exec": [
+							"tests[\"No genera error en el Get\"] = responseCode.code === 200;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/countries/{{new_country}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"countries",
+						"{{new_country}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Editar un país",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "3e51f98c-1b50-450c-9125-698e56aaba85",
+						"exec": [
+							"tests[\"No genera error en el Put\"] = responseCode.code === 200;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"population\": 58621,\r\n    \"lifeExpectancy\": 94.8,\r\n    \"purchasingPower\": 853008.34\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8081/countries/{{new_country}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"countries",
+						"{{new_country}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Editar un país que no existe",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "3e51f98c-1b50-450c-9125-698e56aaba85",
+						"exec": [
+							"tests[\"Debe generar error en el Put\"] = responseCode.code === 404;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"population\": 58621,\r\n    \"lifeExpectancy\": 94.8,\r\n    \"purchasingPower\": 853008.34\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8081/countries/paisQueNoExiste",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"countries",
+						"paisQueNoExiste"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Borrar un país",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "6eeb128c-8119-473b-8692-cdddda5a30ff",
+						"exec": [
+							"tests[\"No genera error en el Delete\"] = responseCode.code === 200;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/countries/{{new_country}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"countries",
+						"{{new_country}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Borrar un país no existente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "9ffbeb8c-f06f-43c8-aa17-12588e3eda96",
+						"exec": [
+							"tests[\"Debe generar error en el Delete\"] = responseCode.code === 404;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/countries/paisQueNoExiste",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"countries",
+						"paisQueNoExiste"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
